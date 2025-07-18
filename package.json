@@ -1,0 +1,28 @@
+{
+    "name": "task_manager",
+    "version": "1.0.0",
+    "description": "Fullstack app with React, Vite, Tailwind, Express, and TypeScript",
+    "scripts": {
+        "client": "npm run dev --prefix client",
+        "server": "npm run dev --prefix server",
+        "dev": "concurrently \"npm run client\" \"npm run server\"",
+        "build-client": "npm run build --prefix client",
+        "build-server": "npm run build --prefix server",
+        "build-all": "npm run build-client && npm run build-server",
+        "start-client": "npm run start --prefix client",
+        "start-server": "npm run start --prefix server",
+        "start-all": "concurrently \"npm run start-client\" \"npm run start-server\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "autoprefixer": "^10.4.21",
+        "concurrently": "^8.2.2",
+        "postcss": "^8.5.6",
+        "tailwindcss": "^4.1.11"
+    },
+    "dependencies": {
+        "lucide-react": "^0.525.0"
+    }
+}
