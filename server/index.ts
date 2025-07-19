@@ -9,14 +9,18 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
+const PROCESS_TYPE = process.env.PROCESSTYPE;
 if (!JWT_SECRET) {
     console.error("JWT_SECRET is not defined in .env. Exiting.");
     process.exit(1);
 }
-
-app.use(cors({
-    origin: 'https://offpistataskmanager.netlify.app',
-}));
+if (PROCESS_TYPE) {
+    app.use(cors({
+        origin: 'https://offpistataskmanager.netlify.app',
+    }));
+} else {
+    app.use(cors());
+}
 app.use(express.json());
 app.use('/api', router);
 
