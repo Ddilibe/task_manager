@@ -1,3 +1,4 @@
+import "../styles/LoginForm.css"
 import { useState } from 'react';
 import { makeUnauthenticatedRequest } from '../api/api';
 import { useAuth } from '../context/AuthContext';
@@ -37,34 +38,36 @@ export default function Login() {
     };
 
     return (
-        <form onSubmit={handleLogin} className="space-y-4">
-            <h2 className="text-2xl font-semibold text-center">Login</h2>
-            {message && <p className="text-green-400 text-center mb-4">{message}</p>}
-            {error && <p className="text-red-400 text-center mb-4">{error}</p>}
-            <input
-                type="text"
-                placeholder="username"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
+        <div className="loginform-container">
+            <form onSubmit={handleLogin} className="login-form">
+                <h2 className="text-2xl font-semibold text-center">Login</h2>
+                {message && <p className="text-green-400 text-center mb-4">{message}</p>}
+                {error && <p className="text-red-400 text-center mb-4">{error}</p>}
+                <input
+                    type="text"
+                    placeholder="username"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
 
-            <input
-                type="password"
-                placeholder="Password"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-            <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-            >
-                Login
-            </button>
-        </form>
+                <button
+                    type="submit"
+                    className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+                >
+                    Login
+                </button>
+            </form>
+        </div>
     );
 }

@@ -1,4 +1,3 @@
-// client/src/api/api.ts
 
 const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
@@ -50,7 +49,7 @@ export const makeAuthenticatedRequest = async <T>(
     }
 };
 
-// Generic function for making unauthenticated API requests (e.g., login, register)
+
 export const makeUnauthenticatedRequest = async <T>(
     endpoint: string,
     method: string,
@@ -61,7 +60,6 @@ export const makeUnauthenticatedRequest = async <T>(
     };
 
     try {
-        console.log("Calling an endpoint here: ", API_BASE_URL);
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             method,
             headers,

@@ -1,4 +1,4 @@
-// client/src/pages/AuthPage.tsx
+
 import React, { useState } from 'react';
 import Login from '../components/LoginForm';
 import Signup from '../components/SignupForm';

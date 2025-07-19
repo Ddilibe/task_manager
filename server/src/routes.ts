@@ -46,7 +46,7 @@ router.post("/login", loginUser);
 router.post("/task", authenticateToken, CreateTask);
 router.get("/tasks", authenticateToken, getTask);
 router.put("/task/:taskId", authenticateToken, updateTask);
-router.delete("task/:taskId", authenticateToken, deleteTask);
+router.delete("/task/:taskId", authenticateToken, deleteTask);
 router.get("/task/:taskId", authenticateToken, getSingleTask);
 
 export default router;

@@ -1,4 +1,3 @@
-// client/src/context/AuthContext.tsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 interface AuthContextType {
@@ -16,7 +15,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [userId, setUserId] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
 
-    // Check for token in localStorage on initial load
+    
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         const storedUserId = localStorage.getItem('userId');

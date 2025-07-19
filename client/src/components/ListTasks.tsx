@@ -6,11 +6,14 @@ import { EditModal } from "./EditModal";
 import { makeAuthenticatedRequest } from "../api/api";
 import { useAuth } from "../context/AuthContext";
 
+
+export type FetchTasksFunction = () => Promise<void>;
+
 interface TaskProps {
     currentTasks: Task[];
     totalPages: number;
     page: number;
-    fetchTasks: (() => void)
+    fetchTasks: any;
 }
 
 export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page, fetchTasks }) => {
@@ -19,15 +22,18 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
     const [editingTask, setEditingTask] = useState<Task | null>();
     const [currentPage, setCurrentPage] = useState(page);
 
-    const handleDelete = async (id: string) => {
+    const handleDelete = async (deletetasks: Task) => {
         if (!window.confirm('Are you sure you want to delete this task?')) {
             return;
         }
-        const result = await makeAuthenticatedRequest<any>(`/task/${id}`, 'DELETE');
+        interface Result {
+            message: string;
+        }
+        const result = await makeAuthenticatedRequest<Result>(`/task/${deletetasks.id}`, 'DELETE');
         if (result.success) {
             fetchTasks();
+            setSelectedTask(null);
         } else {
-            console.log(result);
             alert(result.error || 'Failed to delete task.');
             if (result.error?.includes('token') || result.error?.includes('Authentication')) {
                 logout();
@@ -50,6 +56,7 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
             alert(`Error updating ${e.id}: ${result.error}`);
         }
         setEditingTask(null);
+        fetchTasks();
     };
 
     return (
@@ -88,7 +95,10 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
                     <div className="flex justify-center items-center gap-2 mt-4">
                         <button
                             disabled={currentPage === 1}
-                            onClick={() => setCurrentPage(currentPage - 1)}
+                            onClick={() => {
+                                setCurrentPage(currentPage - 1);
+                                fetchTasks(currentPage + 1)
+                            }}
                             className="p-2 rounded-full border hover:bg-gray-200 disabled:opacity-30"
                         >
                             <ChevronLeft />
@@ -98,7 +108,10 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
                         </span>
                         <button
                             disabled={currentPage === totalPages}
-                            onClick={() => setCurrentPage(currentPage + 1)}
+                            onClick={() => {
+                                setCurrentPage(currentPage + 1);
+                                fetchTasks(currentPage + 1)
+                            }}
                             className="p-2 rounded-full border hover:bg-gray-200 disabled:opacity-30"
                         >
                             <ChevronRight />
@@ -110,12 +123,17 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
             {/* View Modal */}
             {selectedTask && (
                 <FloatingModal onClose={() => setSelectedTask(null)}>
-                    <h3 className="text-xl font-semibold mb-2">{selectedTask.title}</h3>
+                    <h3 className="text-xl text-black font-semibold mb-2">{selectedTask.title}</h3>
                     <p className="text-gray-700 mb-4">{selectedTask.description}</p>
-                    <div className="flex justify-end gap-2">
+                    <p>Status: {selectedTask.status.split("_")}</p>
+                    <p>Tag: {selectedTask.tag?.split(",").map(val => `#${val} `)}</p>
+                    {/* ts-ignore */}
+                    <p>DueDate: {selectedTask.dueDate as unknown as String}</p>
+                    <p>Priority: {selectedTask.priority}</p>
+                    <div className="flex justify-end gap-2" style={{ display: 'flex', gap: "10px" }}>
                         <button
                             className="text-red-500 hover:underline"
-                            onClick={() => handleDelete(selectedTask.id)}
+                            onClick={() => handleDelete(selectedTask)}
                         >
                             Delete
                         </button>
@@ -133,8 +151,15 @@ export const ListTasks: React.FC<TaskProps> = ({ currentTasks, totalPages, page,
             {editingTask && (
                 <EditModal
                     task={editingTask}
-                    onClose={() => setEditingTask(null)}
-                    onSave={handleUpdate}
+                    onClose={() => {
+                        fetchTasks();
+                        setEditingTask(null);
+                    }
+                    }
+                    onSave={(e: Task) => {
+                        handleUpdate(e)
+                        fetchTasks()
+                    }}
                 />
             )}
         </div>

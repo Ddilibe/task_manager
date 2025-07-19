@@ -1,3 +1,4 @@
+import { URL } from "url";
 import { Task, TaskPriority, TaskStatus } from "../entity/Task";
 import { taskRepository, userRepository } from "../source";
 import { Request, Response } from "express";
@@ -37,7 +38,11 @@ export const CreateTask = async (req: Request, res: Response) => {
 
 export const getTask = async (req: Request, res: Response) => {
     const userId = req.userId as string;
-    const page = parseInt(req.params.page);
+    // const page = req.params.page as unknown as number;
+    const baseurl = `${req.protocol}://${req.host}${req.originalUrl}`
+    const phrased = new URL(baseurl);
+    const page = phrased.searchParams.get("page") as unknown as number;
+
     try {
         const user = await userRepository.findOne({
             where: { id: userId },
@@ -47,12 +52,12 @@ export const getTask = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
-        if (page && page >= 1) {
-            if (page > Math.ceil(user.tasks.length / 10)) {
-                let length = page * 10;
+        if (page && page > 1) {
+            if ((page - 1) * 10 < user.tasks.length) {
+                let length = (page - 1) * 10;
                 let data = user.tasks.slice(length, length + 10);
                 let number_of_pages = user.tasks.length / 10 < 1 ? 1 : Math.ceil(user.tasks.length / 10);
-                return res.status(200).json({ task: data, page: page, number_of_pages: number_of_pages })
+                return res.status(200).json({ task: data, page: page + 1, number_of_pages: number_of_pages })
             }
         }
         let data = user.tasks.slice(0, 10);
@@ -113,7 +118,6 @@ export const updateTask = async (req: Request, res: Response) => {
 };
 
 export const deleteTask = async (req: Request, res: Response) => {
-    console.log("Calling the delete task endpoint");
     const taskId = req.params.taskId as string;
     const userId = req.userId as string;
     try {

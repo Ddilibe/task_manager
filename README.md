@@ -67,12 +67,12 @@ A fullstack task management application built with React, Vite, Tailwind CSS (fr
 ## Step-by-Step Setup
 
 ### Prerequisites
-- Node.js (v18+ recommended)
+- Node.js (v24+ recommended)
 - npm
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone git@github.com:Ddilibe/task_manager.git
 cd task_manager
 ```
 
@@ -90,6 +90,7 @@ Create a `.env` file in the `server/` directory:
 ```
 PORT=3000
 JWT_SECRET=your_jwt_secret_here
+# Use `openssl rand -base64 32` on your terminal to generate a more random text
 ```
 
 #### Frontend (`client`)

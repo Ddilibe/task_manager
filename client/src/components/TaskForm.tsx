@@ -1,12 +1,12 @@
-// client/src/components/TaskForm.tsx
+
 import React, { useState, useEffect } from 'react';
 import { type Task, TaskStatus, TaskPriority } from '../types/task';
 import { FloatingModal } from './FloatingModal';
 
 interface TaskFormProps {
-    task?: Task; // Optional, for editing existing tasks
+    task?: Task; 
     onSave: (task: Omit<Task, 'id' | 'user' | 'userId'>) => Promise<void>;
-    onCancel?: () => void; // Optional, for cancelling edit mode
+    onCancel?: () => void; 
     loading: boolean;
     error: string | null;
 }

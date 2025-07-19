@@ -36,7 +36,7 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 };
 
-// User login (simplified, no JWT for now)
+
 export const loginUser = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
@@ -59,7 +59,6 @@ export const loginUser = async (req: Request, res: Response) => {
             JWT_SECRET,
             { expiresIn: '1h' }
         );
-        console.log(req.body);
 
         res.status(200).json({ message: 'Login successful!', userId: user.id, username: user.username, token: token });
     } catch (error: any) {
