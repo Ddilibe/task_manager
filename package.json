@@ -3,8 +3,9 @@
     "version": "1.0.0",
     "description": "Fullstack app with React, Vite, Tailwind, Express, and TypeScript",
     "scripts": {
-        "client": "cd client && npm install && cd ../ && npm run dev --prefix client",
-        "server": "cd server && npm install && cd ../ && npm run dev --prefix server",
+        "setup": "cd client && npm install && cd ../server && npm install",
+        "client": "npm run dev --prefix client",
+        "server": "npm run dev --prefix server",
         "dev": "concurrently \"npm run client\" \"npm run server\"",
         "build-client": "npm run build --prefix client",
         "build-server": "npm run build --prefix server",

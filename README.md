@@ -79,8 +79,7 @@ cd task_manager
 ### 2. Install dependencies
 ```bash
 npm install
-cd client && npm install
-cd ../server && npm install
+npm run setup
 ```
 
 ### 3. Configure environment variables
